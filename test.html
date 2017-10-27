@@ -1,0 +1,92 @@
+<!--Devin Shreckengost CPSC-317 Dr. Dailey
+	Description: This program will ask the user for a number, then generate a times table from 1 until that number. -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Assignment 2.3</title>
+		<meta charset="utf-8">
+		<!-- Since there are a few different color variations I made a cell class and a class for each color. -->
+		<style>
+			.tableBorder{
+				border: 5px ridge black;
+				border-collapse: collapse;
+			}
+			.cell{
+				border: 5px ridge black;
+				width: 40px;
+				height: 40px;
+				text-align: center;
+			}
+			.header{
+				background-color: #E1E1FF;
+			}
+			.alternatingCell{
+				background-color: #FFE1E1;
+			}
+		</style>
+	</head>
+	<!-- I manipulated the input boxes to minimize the possibility of user error, with a max of 2 characters. -->
+	<body>
+		<p> How big would you like the table to be? <br/> Enter a number between 3 and 10: </p>
+		<input type="text" id="input1" size="2" maxlength="2" oninput="updateOtherInput(this)"/>
+		x
+		<input type="text" id="input2" size="2" maxlength="2" oninput="updateOtherInput(this)"/><br/>
+		<input type="button" value="Enter" onclick="verifyInput()"/>
+		<div>
+		</div>
+	</body>
+	<script>
+		/* This function automatically fills the other input box, since we are doing n by n there is no reason for a user to need to put in the same number twice. */
+		function updateOtherInput(inputObject){
+			var id = inputObject.id;
+			var value = inputObject.value;
+			
+			if(id=="input1"){
+				document.getElementById("input2").value = value;
+			}
+			else{
+				document.getElementById("input1").value = value;
+			}
+		}
+		
+		/* This function verifies the input is between 3 and 10, and alerts the user if they have tried an unacceptable value like a letter or too large of a number. */
+		function verifyInput(){
+			var value = document.getElementById("input1").value;
+			if(value>=3 && value<=10){
+				generateTable();
+			}
+			else{
+				alert("Please enter a value between 3 and 10. You entered '"+value+"' which will not work.");
+			}
+		}
+		
+		/* This function makes the table inside of the div tag, and assigns classes to cells based on what position the cell is in inside the table. */
+		function generateTable(){
+			var text = '<table class="tableBorder">';
+			var size = document.getElementById("input1").value;
+			for(var row=0; row<=size; row++){
+				text += '<tr>';
+				for(var col=0; col<=size; col++){
+					if(row==0 && col==0){
+						text += '<td class="header cell">x</td>';
+					}
+					else if(row==0 && col!=0){
+						text += '<td class="header cell">'+col+'</td>';
+					}
+					else if(row!=0 && col==0){
+						text += '<td class="header cell">'+row+'</td>';
+					}
+					else if(col!=0 && col%2==0){
+						text += '<td class="alternatingCell cell">'+row*col+'</td>';
+					}
+					else{
+						text += '<td class="cell">'+(row*col)+'</td>';
+					}
+				}
+				text += '</tr>';
+			}
+			text += '</table>';
+			document.getElementsByTagName("div")[0].innerHTML = text;
+		}
+	</script>
+</html>
